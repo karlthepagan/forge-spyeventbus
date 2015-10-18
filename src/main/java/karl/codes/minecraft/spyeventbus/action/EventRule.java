@@ -13,6 +13,13 @@ public class EventRule {
     private JsonNode eventSpec;
     private EventAction actionImpl;
 
+    public EventRule() {
+    }
+
+    public EventRule(EventAction action) {
+        actionImpl = action;
+    }
+
     @JsonDeserialize(using = DelegatingDeserializer.class)
     public void setEvent(JsonNode event) {
         eventSpec = event;

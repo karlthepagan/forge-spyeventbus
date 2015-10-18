@@ -8,6 +8,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
+import karl.codes.minecraft.spyeventbus.config.ConfigManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,12 @@ public class SpyEventBus
 
     private static final ConcurrentMap<Class,Boolean> SEEN = new ConcurrentHashMap<Class, Boolean>();
 
+    private final ConfigManager config;
+
+    public SpyEventBus() {
+        config = new ConfigManager();
+    }
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -40,14 +47,6 @@ public class SpyEventBus
 
     @SubscribeEvent
     public void event(Event event) {
-        Class<? extends Event> type = event.getClass();
-        Boolean show = INTERESTING.get(type);
-        if(show == null) {
-            show = SEEN.putIfAbsent(type,Boolean.TRUE) == null;
-        }
-
-        if(show) {
-            LOG.info("EVENTSPY\n.put({}.class,false)",event.getClass().getCanonicalName());
-        }
+        config.apply(event);
     }
 }
