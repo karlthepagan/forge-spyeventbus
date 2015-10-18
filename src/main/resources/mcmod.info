@@ -1,0 +1,16 @@
+[
+{
+  "modid": "spyeventbus",
+  "name": "Spy Event Bus",
+  "description": "Developer debugging tool used to watch for events on the Forge EventBus",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["@karlthepagan"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
