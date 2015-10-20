@@ -23,31 +23,16 @@ public class ConfigManager {
     protected void applyDefaults(ConfigManager target) {
         Builder b = Builder.with(target.rules);
 
-        b.event(net.minecraftforge.client.event.TextureStitchEvent.Pre.class)
+        b.event(net.minecraftforge.client.event.TextureStitchEvent.class)
                 .rule(IGNORE);
 
         b.event(net.minecraftforge.client.event.GuiOpenEvent.class)
                 .rule(IGNORE);
 
-        b.event(net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent.Pre.class)
+        b.event(net.minecraftforge.client.event.GuiScreenEvent.class)
                 .rule(IGNORE);
 
-        b.event(net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent.Post.class)
-                .rule(IGNORE);
-
-        b.event(net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent.Pre.class)
-                .rule(IGNORE);
-
-        b.event(net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent.Post.class)
-                .rule(IGNORE);
-
-//        b.event(net.minecraftforge.client.event.sound.PlaySoundEvent17.class)
-//                .rule(IGNORE);
-
-        b.event(net.minecraftforge.client.event.sound.PlayStreamingSourceEvent.class)
-                .rule(IGNORE);
-
-        b.event(net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent.Pre.class)
+        b.event(net.minecraftforge.client.event.sound.SoundEvent.class)
                 .rule(IGNORE);
 
 //        b.event(net.minecraftforge.event.entity.player.PlayerDestroyItemEvent.class)
