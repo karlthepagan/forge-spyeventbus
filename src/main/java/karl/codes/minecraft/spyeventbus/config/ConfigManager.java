@@ -1,13 +1,18 @@
 package karl.codes.minecraft.spyeventbus.config;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import cpw.mods.fml.common.eventhandler.Event;
 import karl.codes.minecraft.spyeventbus.action.EventAction;
 import karl.codes.minecraft.spyeventbus.action.EventRule;
+import karl.codes.minecraft.spyeventbus.runtime.SpyEventRuntime;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static karl.codes.minecraft.spyeventbus.action.DefaultRules.*;
 
@@ -15,10 +20,13 @@ import static karl.codes.minecraft.spyeventbus.action.DefaultRules.*;
  * Created by karl on 10/15/2015.
  */
 public class ConfigManager {
+    private final SpyEventRuntime runtime;
+
     private ListMultimap<Class<? extends Event>,EventRule> rules;
 
-    public ConfigManager() {
-        rules = ArrayListMultimap.create();
+    public ConfigManager(SpyEventRuntime runtime) {
+        this.rules = ArrayListMultimap.create();
+        this.runtime = runtime;
 
         applyDefaults(this);
     }
@@ -44,8 +52,8 @@ public class ConfigManager {
         b.event(net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent.Post.class)
                 .rule(IGNORE);
 
-        b.event(net.minecraftforge.client.event.sound.PlaySoundEvent17.class)
-                .rule(IGNORE);
+//        b.event(net.minecraftforge.client.event.sound.PlaySoundEvent17.class)
+//                .rule(IGNORE);
 
         b.event(net.minecraftforge.client.event.sound.PlayStreamingSourceEvent.class)
                 .rule(IGNORE);
@@ -54,30 +62,25 @@ public class ConfigManager {
                 .rule(IGNORE);
 
         b.event(net.minecraftforge.event.entity.player.PlayerDestroyItemEvent.class)
-                .rule(LOG.DEBUG);
+                .rule(LOG.INFO);
     }
 
     public void populate(Config config) {
+        // clear
+        // apply defaults
+        // apply config
+        // register runtime
     }
 
-    public void apply(Event event) {
-        Class<? extends Event> type = event.getClass();
-
-
-        Boolean show = INTERESTING.get(type);
-        if(show == null) {
-            show = SEEN.putIfAbsent(type,Boolean.TRUE) == null;
-        }
-
-        if(show) {
-            LOG.info("EVENTSPY\n.put({}.class,false)",event.getClass().getCanonicalName());
-        }
+    public ListMultimap<Class<? extends Event>, EventRule> getRules() {
+        return rules;
     }
 
     private static class Builder {
         private Multimap<Class<? extends Event>,EventRule> target;
         private Class<? extends Event> event;
         private EventRule rule;
+        private ListMultimap<Class<? extends Event>, EventRule> rules;
 
         public Builder commit() {
             target.put(event,rule);

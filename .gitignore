@@ -16,3 +16,4 @@
 /options.txt
 /*.iml
 /usernamecache.json
+/secret*

@@ -1,13 +1,14 @@
 package karl.codes.minecraft.spyeventbus.action;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import karl.codes.minecraft.spyeventbus.SpyEventBus;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by karl on 10/18/2015.
@@ -24,7 +25,7 @@ public class DefaultActions {
     private static final class IgnoreAction implements EventAction {
         @Nullable
         @Override
-        public Object apply(Event input) {
+        public Object apply(Event input, ConcurrentMap<String,Object> memory) {
             return null;
         }
     }
@@ -41,7 +42,7 @@ public class DefaultActions {
 
         @Nullable
         @Override
-        public Object apply(Event input) {
+        public Object apply(Event input, ConcurrentMap<String,Object> memory) {
             LOG.log(level,format,input);
             return null;
         }

@@ -1,13 +1,14 @@
 package karl.codes.minecraft.spyeventbus;
 
 import com.google.common.collect.ImmutableMap;
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
+import karl.codes.minecraft.spyeventbus.runtime.SpyEventRuntime;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import karl.codes.minecraft.spyeventbus.config.ConfigManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
@@ -35,9 +36,13 @@ public class SpyEventBus
     private static final ConcurrentMap<Class,Boolean> SEEN = new ConcurrentHashMap<Class, Boolean>();
 
     private final ConfigManager config;
+    private final SpyEventRuntime runtime;
 
     public SpyEventBus() {
-        config = new ConfigManager();
+        runtime = new SpyEventRuntime();
+        config = new ConfigManager(runtime);
+
+        runtime.update(config.getRules());
     }
 
     @EventHandler
@@ -47,6 +52,6 @@ public class SpyEventBus
 
     @SubscribeEvent
     public void event(Event event) {
-        config.apply(event);
+        runtime.apply(event);
     }
 }
