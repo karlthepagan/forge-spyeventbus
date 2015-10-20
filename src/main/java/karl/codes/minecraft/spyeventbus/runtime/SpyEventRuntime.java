@@ -2,6 +2,8 @@ package karl.codes.minecraft.spyeventbus.runtime;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
+import karl.codes.java.ClassAncestry;
+import karl.codes.minecraft.spyeventbus.action.EventAction;
 import karl.codes.minecraft.spyeventbus.action.EventRule;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -17,12 +19,12 @@ import java.util.concurrent.ConcurrentMap;
 public class SpyEventRuntime {
     private ConcurrentMap<Class<? extends Event>,List<EventRule>> runtime;
 
-    private ConcurrentMap<EventRule,ConcurrentMap<String,Object>> workingMemory;
+    private ConcurrentMap<EventRule,ConcurrentMap<Object,Object>> workingMemory;
 
     public SpyEventRuntime() {
         runtime = new ConcurrentHashMap<Class<? extends Event>, List<EventRule>>();
 
-        workingMemory = new ConcurrentHashMap<EventRule, ConcurrentMap<String, Object>>();
+        workingMemory = new ConcurrentHashMap<EventRule, ConcurrentMap<Object, Object>>();
     }
 
     public void update(ListMultimap<Class<? extends Event>,EventRule> rules) {
@@ -53,8 +55,8 @@ public class SpyEventRuntime {
         }
     }
 
-    public ConcurrentMap<String,Object> memory(EventRule rule) {
-        return workingMemory.computeIfAbsent(rule,(EventRule r) -> new ConcurrentHashMap<String, Object>());
+    public ConcurrentMap<Object,Object> memory(EventRule rule) {
+        return workingMemory.computeIfAbsent(rule,(EventRule r) -> new ConcurrentHashMap<Object, Object>());
     }
 
     public void expire(EventRule rule) {
@@ -62,24 +64,33 @@ public class SpyEventRuntime {
     }
 
     public void apply(Event event) {
-        Class<? extends Event> type = event.getClass();
+        List<EventRule> rules;
+        EventAction.Result lastResult = EventAction.Result.MISS;
 
-        List<EventRule> rules = runtime.get(event);
+        ruleProcessing:
+        for(Class<? extends Event> type : getAncestry(event,Event.class)) {
+            rules = runtime.get(type);
 
-        if(rules == null) return;
+            if(rules == null) continue;
 
-        for(EventRule rule : rules) {
-            rule.execute(event);
+            for(EventRule rule : rules) {
+                lastResult = rule.execute(event,lastResult);
+                if(lastResult == EventAction.Result.ABORT) break ruleProcessing;
+            }
+
+    //        Boolean show = INTERESTING.get(type);
+    //        if(show == null) {
+    //            show = SEEN.putIfAbsent(type,Boolean.TRUE) == null;
+    //        }
+    //
+    //        if(show) {
+    //            LOG.info("EVENTSPY\n.put({}.class,false)",event.getClass().getCanonicalName());
+    //        }
         }
+    }
 
-//        Boolean show = INTERESTING.get(type);
-//        if(show == null) {
-//            show = SEEN.putIfAbsent(type,Boolean.TRUE) == null;
-//        }
-//
-//        if(show) {
-//            LOG.info("EVENTSPY\n.put({}.class,false)",event.getClass().getCanonicalName());
-//        }
+    private <T,U extends T> Iterable<Class<? extends T>> getAncestry(U event, Class<T> rootClass) {
+        return new ClassAncestry<T>((Class<U>)event.getClass(),rootClass);
     }
 
     public class StateProxy {

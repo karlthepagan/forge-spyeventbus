@@ -1,18 +1,10 @@
 package karl.codes.minecraft.spyeventbus.config;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import karl.codes.minecraft.spyeventbus.action.EventAction;
 import karl.codes.minecraft.spyeventbus.action.EventRule;
-import karl.codes.minecraft.spyeventbus.runtime.SpyEventRuntime;
 import net.minecraftforge.fml.common.eventhandler.Event;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static karl.codes.minecraft.spyeventbus.action.DefaultRules.*;
 
@@ -20,13 +12,10 @@ import static karl.codes.minecraft.spyeventbus.action.DefaultRules.*;
  * Created by karl on 10/15/2015.
  */
 public class ConfigManager {
-    private final SpyEventRuntime runtime;
-
     private ListMultimap<Class<? extends Event>,EventRule> rules;
 
-    public ConfigManager(SpyEventRuntime runtime) {
+    public ConfigManager() {
         this.rules = ArrayListMultimap.create();
-        this.runtime = runtime;
 
         applyDefaults(this);
     }
@@ -61,8 +50,13 @@ public class ConfigManager {
         b.event(net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent.Pre.class)
                 .rule(IGNORE);
 
-        b.event(net.minecraftforge.event.entity.player.PlayerDestroyItemEvent.class)
+//        b.event(net.minecraftforge.event.entity.player.PlayerDestroyItemEvent.class)
+//                .rule(DefaultActions.LOGALWAYS.INFO);
+
+        b.event(Event.class)
                 .rule(LOG.INFO);
+
+        b.commit();
     }
 
     public void populate(Config config) {

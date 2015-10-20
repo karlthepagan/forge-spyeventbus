@@ -1,6 +1,5 @@
 package karl.codes.minecraft.spyeventbus;
 
-import com.google.common.collect.ImmutableMap;
 import karl.codes.minecraft.spyeventbus.runtime.SpyEventRuntime;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -15,7 +14,6 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -40,7 +38,7 @@ public class SpyEventBus
 
     public SpyEventBus() {
         runtime = new SpyEventRuntime();
-        config = new ConfigManager(runtime);
+        config = new ConfigManager();
 
         runtime.update(config.getRules());
     }

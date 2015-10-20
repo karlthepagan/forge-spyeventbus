@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import karl.codes.minecraft.spyeventbus.runtime.SpyEventRuntime;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import karl.codes.jackson.DelegatingDeserializer;
-import karl.codes.minecraft.spyeventbus.action.EventAction;
 
 /**
  * Created by karl on 10/15/2015.
@@ -28,7 +27,7 @@ public class EventRule {
     }
 
     public boolean testEvent(Event event) {
-        return false;
+        return true;
     }
 
 //    @JsonDeserialize(using = ActionLookupDeserializer.class)
@@ -47,13 +46,15 @@ public class EventRule {
         this.runtime = runtime;
     }
 
-    public void execute(Event event) {
-        if(!testEvent(event)) return;
+    public EventAction.Result execute(Event event, EventAction.Result lastResult) {
+        if(!testEvent(event)) return lastResult;
 
         EventAction action = getAction();
 
-        action.apply(event,
+        return action.apply(
+                event,
                 action.creatememory()?
-                        getRuntime().get().memory(this):null);
+                        getRuntime().get().memory(this):null,
+                lastResult);
     }
 }
