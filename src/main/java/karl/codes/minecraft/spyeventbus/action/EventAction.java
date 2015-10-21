@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentMap;
  * Created by karl on 10/18/2015.
  */
 public interface EventAction {
-    public static enum Result {
+    public static enum Result { // TODO compound result for better cancel overriding?
         ABORT, // HARD cancel, stop processing!
         CANCEL, // cancel downstream actions
         OK, // continue

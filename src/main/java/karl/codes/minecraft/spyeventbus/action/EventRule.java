@@ -2,6 +2,7 @@ package karl.codes.minecraft.spyeventbus.action;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.google.common.base.Objects;
 import karl.codes.minecraft.spyeventbus.runtime.SpyEventRuntime;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import karl.codes.jackson.DelegatingDeserializer;
@@ -56,5 +57,18 @@ public class EventRule {
                 action.creatememory()?
                         getRuntime().get().memory(this):null,
                 lastResult);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventRule eventRule = (EventRule) o;
+        return Objects.equal(actionImpl, eventRule.actionImpl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(actionImpl);
     }
 }

@@ -17,10 +17,10 @@ public class ConfigManager {
     public ConfigManager() {
         this.rules = ArrayListMultimap.create();
 
-        applyDefaults(this);
+        applyLogSummaryDefaults(this);
     }
 
-    protected void applyDefaults(ConfigManager target) {
+    protected void applyLogFirstDefaults(ConfigManager target) {
         Builder b = Builder.with(target.rules);
 
         b.event(net.minecraftforge.client.event.TextureStitchEvent.class)
@@ -35,8 +35,110 @@ public class ConfigManager {
         b.event(net.minecraftforge.client.event.sound.SoundEvent.class)
                 .rule(IGNORE);
 
+        b.event(net.minecraftforge.event.world.WorldEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.event.entity.EntityEvent.class)
+                .rule(IGNORE);
+
+//        b.event(net.minecraftforge.event.entity.EntityJoinWorldEvent.class)
+//                .rule(LOGALWAYS.INFO);
+
+        b.event(net.minecraftforge.client.event.EntityViewRenderEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.DrawBlockHighlightEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderWorldLastEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderHandEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderGameOverlayEvent.class)
+                .rule(IGNORE);
+
+//        b.event(net.minecraftforge.client.event.ClientChatReceivedEvent.class)
+//                .rule(LOGALWAYS.INFO);
+
+        b.event(net.minecraftforge.client.event.MouseEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.FOVUpdateEvent.class)
+                .rule(IGNORE);
+
+        // TODO need to un-ignore specific children
+        b.event(net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderLivingEvent.class)
+                .rule(IGNORE);
+
+//        b.event(net.minecraftforge.event.terraingen.BiomeEvent.class)
+//                .rule(IGNORE);
+
 //        b.event(net.minecraftforge.event.entity.player.PlayerDestroyItemEvent.class)
 //                .rule(DefaultActions.LOGALWAYS.INFO);
+
+        b.event(Event.class)
+                .rule(LOGFIRST.INFO);
+
+        b.commit();
+    }
+
+    protected void applyLogSummaryDefaults(ConfigManager target) {
+        Builder b = Builder.with(target.rules);
+
+        b.event(net.minecraftforge.client.event.TextureStitchEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.GuiOpenEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.GuiScreenEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.EntityViewRenderEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.DrawBlockHighlightEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderWorldLastEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderHandEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderGameOverlayEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.MouseEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.FOVUpdateEvent.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.client.event.RenderLivingEvent.class)
+                .rule(IGNORE);
+
+        // spammy entity events
+        b.event(net.minecraftforge.event.entity.EntityEvent.EntityConstructing.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent.class)
+                .rule(IGNORE);
+
+        // spammy biome events
+        b.event(net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor.class)
+                .rule(IGNORE);
+
+        b.event(net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor.class)
+                .rule(IGNORE);
 
         b.event(Event.class)
                 .rule(LOG.INFO);

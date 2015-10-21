@@ -77,15 +77,6 @@ public class SpyEventRuntime {
                 lastResult = rule.execute(event,lastResult);
                 if(lastResult == EventAction.Result.ABORT) break ruleProcessing;
             }
-
-    //        Boolean show = INTERESTING.get(type);
-    //        if(show == null) {
-    //            show = SEEN.putIfAbsent(type,Boolean.TRUE) == null;
-    //        }
-    //
-    //        if(show) {
-    //            LOG.info("EVENTSPY\n.put({}.class,false)",event.getClass().getCanonicalName());
-    //        }
         }
     }
 
