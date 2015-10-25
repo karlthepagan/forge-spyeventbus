@@ -3,7 +3,9 @@ package karl.codes.minecraft.spyeventbus.config;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import karl.codes.minecraft.spyeventbus.action.EventActionBuilder;
 import karl.codes.minecraft.spyeventbus.action.EventRule;
+import karl.codes.minecraft.spyeventbus.action.promise.PromiseAction;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 import static karl.codes.minecraft.spyeventbus.action.DefaultRules.*;
@@ -157,7 +159,7 @@ public class ConfigManager {
         return rules;
     }
 
-    private static class Builder {
+    public static class Builder {
         private Multimap<Class<? extends Event>,EventRule> target;
         private Class<? extends Event> event;
         private EventRule rule;

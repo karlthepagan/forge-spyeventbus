@@ -12,6 +12,7 @@ import karl.codes.jackson.DelegatingDeserializer;
  */
 public class EventRule {
     private JsonNode eventSpec;
+    // TODO consider separating out rule-action binding
     private EventAction actionImpl;
     private SpyEventRuntime.StateProxy runtime;
 
