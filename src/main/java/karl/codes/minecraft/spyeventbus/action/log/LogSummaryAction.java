@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 /**
  * Created by karl on 10/20/2015.
  */
-public final class LogSummaryAction implements EventAction {
+public final class LogSummaryAction implements EventAction<Event> {
     private static final Logger LOG = LogManager.getLogger(SpyEventBus.class);
 
     // TODO inject from environment

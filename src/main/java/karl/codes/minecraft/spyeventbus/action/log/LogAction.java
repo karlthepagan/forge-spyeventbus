@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Created by karl on 10/20/2015.
  */
-public final class LogAction implements EventAction {
+public final class LogAction implements EventAction<Event> {
     private static final Logger LOG = LogManager.getLogger(SpyEventBus.class);
 
     private final Level level;

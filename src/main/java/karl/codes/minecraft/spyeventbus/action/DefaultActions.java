@@ -29,7 +29,7 @@ public class DefaultActions {
         public static final EventAction DEBUG = new LogSummaryAction(Level.DEBUG);
     }
 
-    private static final class IgnoreAction implements EventAction {
+    private static final class IgnoreAction implements EventAction<Event> {
         private final Result result;
 
         public IgnoreAction(Result result) {

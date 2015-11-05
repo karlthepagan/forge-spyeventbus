@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Created by karl on 10/18/2015.
  */
-public interface EventAction {
+public interface EventAction<T extends Event> {
     public static enum Result { // TODO compound result for better cancel overriding?
         ABORT, // HARD cancel, stop processing!
         CANCEL, // cancel downstream actions
@@ -17,7 +17,7 @@ public interface EventAction {
     }
 
     @Nullable
-    public Result apply(Event event, ConcurrentMap<Object,Object> memory, Result last);
+    public Result apply(T event, ConcurrentMap<Object,Object> memory, Result last);
 
     public default boolean creatememory() {
         return false;

@@ -56,6 +56,7 @@ public class SpyEventRuntime {
     }
 
     public ConcurrentMap<Object,Object> memory(EventRule rule) {
+        // TODO bad usage?
         return workingMemory.computeIfAbsent(rule,(EventRule r) -> new ConcurrentHashMap<Object, Object>());
     }
 
